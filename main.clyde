@@ -1,27 +1,2 @@
-on "!help":
-  say "Hi! I'm a bot built to improve your discord experience.
-
-Commands:
-- !ping
-- !info
-- !readme
-
-"
-
-on "!ping":
-  say "pong"
-
-on "!info":
-  say "Greetings. I am a demo bot to display the capabilities of Clyde."
-  say "Written by Pranav Karthik and Liam Ilan."
-
-on "!":
-  say "please supply a command"
-  
-on "ping":
-  say "You need to type !ping :)"
-
-on "!readme":
-  say "
-Read our README.md here: https://repl.it/@discordbotlang/clyde#README.md
-"  
+on "hello bot":
+  say "hello world!"

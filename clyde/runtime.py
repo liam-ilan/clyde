@@ -1,8 +1,11 @@
 import discord
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class Runtime():
   client = discord.Client()
+
   token = os.environ["TOKEN"]
 
   # current channel

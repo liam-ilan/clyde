@@ -1,4 +1,4 @@
-# NOTE: as of right now, this repo simply contains a clone of the original repl (https://repl.it/@discordbotlang/clyde)
+# NOTE: as of right now, this repo is mostly just a clone of the original repl, with some tweaks. (https://repl.it/@discordbotlang/clyde)
 
 # Clyde
 Clyde is a simple programming language that allows anyone, with no experience, to build a Discord bot. 
