@@ -4,6 +4,7 @@ EQUAL, EVENT, STRING, COLON, COMMAND, SEPERATOR = 'EQUAL', 'EVENT', 'STRING', 'C
 # Array of commands that the user can use
 commands = [
   "say",
+  "log",
 ]
 
 # Token class used to create token object with two attributes: type & value
@@ -41,9 +42,11 @@ def lex(text):
     if isName and not (current_item in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"):
       isName = False
 
-      if currentName != "not":
+      if currentName != "if":
       # add name to tokens
         tokens.append(Token("COMMAND" if currentName in commands else "NAME", currentName))
+      else:
+        tokens.append(Token("IF", currentName))
 
       # reset
       currentName = ""
@@ -71,6 +74,16 @@ def lex(text):
       # on token
       pos += 2
       tokens.append(Token(EVENT, "on"))
+
+    elif text[pos:pos + 5] == " true":
+      # on token
+      pos += 4
+      tokens.append(Token('BOOLEAN', True))
+    
+    elif text[pos:pos + 6] == " false":
+      # on token
+      pos += 5
+      tokens.append(Token('BOOLEAN', False))
 
     # Create equal token
     elif current_item == "=":
@@ -100,11 +113,7 @@ def lex(text):
   # Create string token
   if (len(currentString) > 0):
     tokens.append(Token(STRING, currentString))
-
-  # Create command token
-  if (len(currentName) > 0):
-    tokens.append(Token("COMMAND" if currentName in commands else "NAME", currentName))
-
+    
   # Output
   return tokens
     

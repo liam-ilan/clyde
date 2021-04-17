@@ -1,2 +1,15 @@
-on "hello bot":
-  say "hello world!"
+on "print something":
+    log "hello world"
+    say "printed hello world"
+
+on "say something":
+    say "hello world"
+
+on "turn light on":
+    toggle = true
+
+on "turn light off":
+    toggle = false
+
+on "light":
+    if toggle say "light is on"

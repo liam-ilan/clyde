@@ -140,3 +140,28 @@ class String:
   # check if string is message
   async def check(self, runtime):
     return self.value == runtime.vars["message"]
+
+class Boolean:
+    def __init__(self, value):
+      self.value = value
+
+    def __repr__(self, depth = 0):
+      res = ("\t" * depth) + "boolean: " + str(self.value) + "\n" 
+      return res
+
+    # return boolean
+    async def run(self, runtime):
+      return self.value
+
+class If:
+  def __init__(self, condition, function):
+    self.condition = condition
+    self.function = function
+
+  def __repr__(self, depth = 0):
+    res = ("\t" * depth) + "if: \n" + self.condition.__repr__(depth + 1) + ("\t" * (depth + 1)) + "then\n" + self.function.__repr__(depth + 1) + "\n" 
+    return res
+
+  async def run(self, runtime):
+    if await self.condition.run(runtime):
+      await self.function.run(runtime)

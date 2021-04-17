@@ -22,8 +22,11 @@ class Runtime():
   # methods
   async def say(args, runtime):
     [await runtime.channel.send(i) for i in args]
-    
-  methods = {"say": say}
+
+  async def log(args, runtime):
+    [print(i) for i in args]
+
+  methods = {"say": say, "log": log}
 
   def run(self):
     @self.client.event

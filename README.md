@@ -1,23 +1,19 @@
-# NOTE: as of right now, this repo is mostly just a clone of the original repl, with some tweaks. (https://repl.it/@discordbotlang/clyde)
-
 # Clyde
 Clyde is a simple programming language that allows anyone, with no experience, to build a Discord bot. 
 It is crafted to create a simple experience for those using it.
+
+This was originally a replit language jam submission (https://repl.it/@discordbotlang/clyde).
 
 Join our [discord server](https://discord.gg/BFX5xAa) to test out a demo bot built using Clyde.
 
 Note: this language is pretty simple and barebones for now. (WIP)
 
-## How To
-Clyde can run and deploy your own bot within repl.it.
-
-First off, clone this repl (fork or download).
-
+## Setup
 To setup the discord bot,
 1. Open the discord developer portal.
 2. Create a new application.
 3. Add a bot to your discord application.
-4. Create a file named .env. This file will be hidden from the public.
+4. Create a .env file.
 5. Copy the Bot's token, and paste into the .env file in the following format:
 ```
 TOKEN=<Your token goes here>
@@ -28,23 +24,35 @@ To invite the bot to your server,
 2. Check the box labeled bot under scopes
 3. Under bot permissions, check all the boxes you need
 4. At the bottom of scopes, there will be a text box with a link
-5. Copy and paste the link into you browser.
+5. Copy and paste the link into you browser to invite the bot
 
-You can edit your code in the main.clyde file. See tutorial for more info.
+## Hello World
+Delete the contents of `main.clyde`, and write the following:
+```
+on "hello bot":
+  say "hello world"
+```
+
+Then run `poetry run python clyde/main.py` 
+or, if debugging, run `poetry run python clyde/debug.py`
+
+Your bot should be online, and if you say "hello bot", it will respond with "hello world"
 
 ## Tutorial
 Writing code for your bot using Clyde is super simple.
 
-To say something when a message is sent,
+Clyde programs are made up of multiple listeners.
+They start with `on` followed by a message surrounded in quotes, then a colon, and then a list of instructions.
+
+Listeners listen for messages sent by a user of your bot, and will run their instructions if they hear the correct message.
+
+Example:
 ```
 on "ping":
   say "pong"
 ```
 
-Messages in Clyde are always surrounded by quotes.
-Say is currently the only command implemented.
-
-You can have multiple events,
+You can have multiple listeners,
 ```
 on "ping":
   say "pong"
@@ -53,14 +61,7 @@ on "What's up?":
   say "Hey!"
 ```
 
-You can create variables within Clyde much like the simple syntax found within Python,
-```
-on "Hello":
-  name = "Bob"
-  say name
-```
-
-Sometimes, we want to say many things, in many commands,
+Sometimes, you want to say many things, in many commands,
 ```
 on "Hello":
   say "hi"
@@ -73,41 +74,48 @@ on "Hello":
   say "hi", "greetings", "good morning"
 ```
 
-And sometimes, we just want one line,
+And sometimes, you just want one line,
 ```
 on "Hello": say "hi", "greetings", "good morning"
 ```
 
-We can also create complex bots, with these simple rules,
+If you want to print a message to the console, instead of sending it to your server,
 ```
-on "!ping":
-  say "pong"
-
-on "!info":
-  say "Greetings. I am a demo bot to display the capabilities of Clyde."
-  say "Written by Pranav Karthik and Liam Ilan."
-
-on "!":
-  say "please supply a command"
-  
-on "ping":
-  say "You need to type !ping :)"
+on "log something":
+  log "something logged!"
 ```
 
-## Conclusion
-While building Clyde, we wanted to add numerous features which we unfortunately could not, due to the time restrictions.
-Some of those features include:
-* more commands
-* conditionals
-* embeds
-* arithmetic (and numbers)
-* lists
-* errors
-* discord-specific attributes (user, server, channel, etc.)
+You can also store messages in variables, for later use,
+```
+on "Hello":
+  name = "Bob"
+  say name
+```
+
+You can store booleans (true or false) in variables too,
+```
+on "turn light on":
+  light = true
+
+on "turn light off":
+  light = false
+```
+
+And then run commands if a boolean is true,
+```
+on "turn light on":
+  light = true
+
+on "turn light off":
+  light = false
+
+on "light on?":
+  if light say "light is on"
+```
 
 ## Demo
 Join our [discord server](https://discord.gg/BFX5xAa) to test out a demo bot built using Clyde.
 
-## Credits
-* @discordsheep - Parser + Runtime
-* @Parzivox - Lexer + Runtime
+## Credit
+* https://github.com/pranavkarthik10
+* https://github.com/liam-ilan

@@ -64,6 +64,9 @@ def parseCondition(tokens):
   if (tokens[0].type == "STRING" or tokens[0].type == "NAME") and len(tokens) == 1:
     return parseValue(tokens)
 
+def parseIf(tokens):
+  return nodes.If(parseValue([tokens[1]]), parseCommand(tokens[2:]))
+
 # string: STRING
 def parseString(tokens):
   return nodes.String(tokens[0].value)
@@ -84,6 +87,8 @@ def parseStatement(tokens):
   # current state
   state = ""
 
+  commandIgnoreCounter = 0
+
   i = 0
   for token in tokens:
 
@@ -91,10 +96,12 @@ def parseStatement(tokens):
     if i + 1 < len(tokens) and tokens[i + 1].type == "EQUAL":
 
       # add to lines parsed line
-      if state == "command":
-        lines.append(parseCommand(currentLine))
-      elif state == "assignment":
+      if state == "assignment":
         lines.append(parseAssignment(currentLine))
+      elif state == "command":
+        lines.append(parseCommand(currentLine))
+      elif state == "if":
+        lines.append(parseIf(currentLine))
 
       # reset
       currentLine = []
@@ -102,31 +109,54 @@ def parseStatement(tokens):
       # set state
       state = "assignment"
 
-    # command
-    if token.type == "COMMAND":
+    if token.type == "IF":
+      commandIgnoreCounter += 1
 
       # add to lines parsed line
       if state == "assignment":
         lines.append(parseAssignment(currentLine))
       elif state == "command":
         lines.append(parseCommand(currentLine))
+      elif state == "if":
+        lines.append(parseIf(currentLine))
+
+      currentLine = []
+
+      state = "if"
+
+    # command
+    if token.type == "COMMAND" and commandIgnoreCounter == 0:
+
+      # add to lines parsed line
+      if state == "assignment":
+        lines.append(parseAssignment(currentLine))
+      elif state == "command":
+        lines.append(parseCommand(currentLine))
+      elif state == "if":
+        lines.append(parseIf(currentLine))
 
       # reset
       currentLine = []
 
       # set state
       state = "command"
+    
+    elif token.type == "COMMAND":
+      commandIgnoreCounter = 0
 
     # add token
     currentLine.append(token)
 
     i += 1
+
   
   # add last line
   if state == "assignment":
     lines.append(parseAssignment(currentLine))
   elif state == "command":
     lines.append(parseCommand(currentLine))
+  elif state == "if":
+    lines.append(parseIf(currentLine))
   
   # return statement
   return nodes.Statement(lines)
@@ -172,3 +202,8 @@ def parseValue(tokens):
     return parseString(tokens)
   elif (tokens[0].type == "NAME"):
     return parseName(tokens)
+  elif (tokens[0].type == "BOOLEAN"):
+    return parseBoolean(tokens)
+
+def parseBoolean(tokens):
+  return nodes.Boolean(tokens[0].value)
